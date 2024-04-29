@@ -1,0 +1,34 @@
+{
+  "name": "nuxt-pwa-starter",
+  "version": "1.0.0",
+  "description": "Nuxt.js PWA starter template",
+  "keywords": [
+    "nuxt",
+    "pwa",
+    "vite",
+    "starter"
+  ],
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "nuxt generate && nuxt preview",
+    "postinstall": "nuxt prepare",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/icon.svg"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "nuxt": "^3.11.2",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vite-pwa/assets-generator": "^0.2.4",
+    "@vite-pwa/nuxt": "^0.6.0",
+    "prettier": "^3.2.5"
+  }
+}
