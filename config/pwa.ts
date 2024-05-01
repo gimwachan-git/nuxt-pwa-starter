@@ -1,14 +1,16 @@
 import type { VitePWAOptions } from 'vite-plugin-pwa'
-
 export const pwa: Partial<VitePWAOptions> = {
+  mode: 'production',
   registerType: 'autoUpdate',
   base: '/',
   scope: '/',
+  includeAssets: ['favicon.ico', 'robots.txt'],
   manifest: {
-    name: 'EXAMPLE-PWA',
-    short_name: 'EXAMPLE',
+    name: 'GIMWA-PWA',
+    short_name: 'GIMWA',
     display: 'standalone',
-    description: 'This is a description for the EXAMPLE PWA',
+    description: 'This is a description for the GIMWA PWA',
+    screenshots: [],
     theme_color: '#ffffff',
     lang: 'ja',
     start_url: '/',
@@ -42,10 +44,12 @@ export const pwa: Partial<VitePWAOptions> = {
     ]
   },
   workbox: {
-    cleanupOutdatedCaches: true,
-    sourcemap: false,
+    disableDevLogs: true,
     navigateFallback: null,
-    globPatterns: ['**/*.{css,js,html,ico,txt,svg.png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,json}'],
+    globPatterns: [
+      '**/*.{css,js,html,ico,txt,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,json}*',
+      '**/*_payload.json*'
+    ],
     runtimeCaching: [
       {
         urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
@@ -59,7 +63,8 @@ export const pwa: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /(\.(js|mjs|css|webmanifest|json|woff|woff2|ttf|eot)(\?.*)?$)/,
+        urlPattern:
+          /(\.(css|js,html,ico,txt,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,json)|_payload\.json)(\?[a-zA-Z0-9-]+)?$/,
         handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'assets',
@@ -70,6 +75,11 @@ export const pwa: Partial<VitePWAOptions> = {
         }
       }
     ]
+  },
+  devOptions: {
+    enabled: process.env.NODE_ENV === 'production',
+    type: 'module',
+    navigateFallback: 'index.html'
   },
   disable: process.env.NODE_ENV === 'development'
 }
