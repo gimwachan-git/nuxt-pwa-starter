@@ -1,6 +1,7 @@
 # Nuxt 3 PWA Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
 Look at the [@vite-pwa/nuxt documentation](https://vite-pwa-org.netlify.app/frameworks/nuxt.html) to learn more.
 
 ## Setup
@@ -45,16 +46,16 @@ Build the application for production:
 
 ```bash
 # npm
-npm run build
+npm run generate
 
 # pnpm
-pnpm run build
+pnpm run generate
 
 # yarn
-yarn build
+yarn generate
 
 # bun
-bun run build
+bun run generate
 ```
 
 Locally preview production build:

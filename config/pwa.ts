@@ -6,10 +6,10 @@ export const pwa: Partial<VitePWAOptions> = {
   scope: '/',
   includeAssets: ['favicon.ico', 'robots.txt'],
   manifest: {
-    name: 'GIMWA-PWA',
-    short_name: 'GIMWA',
+    name: 'EXAMPLE-PWA',
+    short_name: 'EXAMPLE',
     display: 'standalone',
-    description: 'This is a description for the GIMWA PWA',
+    description: 'This is a description for the EXAMPLE PWA',
     screenshots: [],
     theme_color: '#ffffff',
     lang: 'ja',
@@ -46,16 +46,48 @@ export const pwa: Partial<VitePWAOptions> = {
   workbox: {
     disableDevLogs: true,
     navigateFallback: null,
-    globPatterns: [
-      '**/*.{css,js,html,ico,txt,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,json}*',
-      '**/*_payload.json*'
-    ],
+    globPatterns: ['**/*.{css,js,html,json}*'],
     runtimeCaching: [
+      // {
+      //   urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+      //   handler: 'CacheFirst',
+      //   options: {
+      //     cacheName: 'google-fonts-cache',
+      //     expiration: {
+      //       maxEntries: 10,
+      //       maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+      //     },
+      //     cacheableResponse: {
+      //       statuses: [0, 200]
+      //     }
+      //   }
+      // },
+      // {
+      //   urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+      //   handler: 'CacheFirst',
+      //   options: {
+      //     cacheName: 'gstatic-fonts-cache',
+      //     expiration: {
+      //       maxEntries: 10,
+      //       maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+      //     },
+      //     cacheableResponse: {
+      //       statuses: [0, 200]
+      //     },
+      //   }
+      // },
+      // {
+      //   urlPattern: ({url}) => url.origin === 'https://api.example.com',
+      //   handler: 'NetworkFirst',
+      //   options: {
+      //     cacheName: 'api-cache',
+      //   },
+      // },
       {
-        urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
-        handler: 'CacheFirst',
+        urlPattern: ({ request }) => request.destination === 'image',
+        handler: 'StaleWhileRevalidate',
         options: {
-          cacheName: 'images',
+          cacheName: 'images-cache',
           expiration: {
             maxEntries: 200,
             maxAgeSeconds: 7 * 24 * 60 * 60 // 1 week
@@ -63,14 +95,28 @@ export const pwa: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern:
-          /(\.(css|js,html,ico,txt,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,json)|_payload\.json)(\?[a-zA-Z0-9-]+)?$/,
+        // font
+        urlPattern: ({ request }) => request.destination === 'font',
         handler: 'StaleWhileRevalidate',
         options: {
-          cacheName: 'assets',
+          cacheName: 'fonts-cache',
           expiration: {
-            maxEntries: 200,
+            maxEntries: 50,
             maxAgeSeconds: 7 * 24 * 60 * 60 // 1 week
+          }
+        }
+      },
+      {
+        urlPattern: /\/_payload\.json(\?.*)?$/,
+        handler: 'NetworkFirst',
+        options: {
+          cacheName: 'payload-json-cache',
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 7 * 24 * 60 * 60 // 1 week
+          },
+          matchOptions: {
+            ignoreSearch: true // ignore query string
           }
         }
       }
